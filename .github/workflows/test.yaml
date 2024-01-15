@@ -23,22 +23,11 @@ jobs:
           CHANGED_FILES=$(git diff --name-status @{u} ${{ github.sha }})
           echo "::set-output name=changed_files::$CHANGED_FILES"
 
-      - name: Print changed files
-        run: |
-          CHANGED_FILES="${{ steps.get-changed-files.outputs.changed_files }}"
-          
-          # Process each changed file
-          IFS=$'\n' read -r -a CHANGED_FILES_ARRAY <<< "$CHANGED_FILES"
-          for file in "${CHANGED_FILES_ARRAY[@]}"; do
-            echo "Changed file: $file"
-          done
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Validate OpenAPI definition
+        uses: char0n/swagger-editor-validate@v1
+        with:
+          swagger-editor-url: http://localhost/
+          definition-file: ${{ steps.get-changed-files.outputs.changed_files }}
 
-      - name: Print changed files
-        run: |
-          CHANGED_FILES="${{ steps.get-changed-files.outputs.changed_files }}"
-
-          # Process each changed file
-          IFS=$'\n' read -r -a CHANGED_FILES_ARRAY <<< "$CHANGED_FILES"
-          for file in "${CHANGED_FILES_ARRAY[@]}"; do
-            echo "Changed file: $file"
-          done
