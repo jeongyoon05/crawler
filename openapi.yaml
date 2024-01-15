@@ -45,7 +45,7 @@ paths:
             type: integer
       responses:
         '200':
-          description: The user dasdasdasjsdhkaskdhjashjkdajkshdknaskdjaksdhjasjkasdasdasdasdasdasdafasdfsgsdfgsfgsdgsgsddgs
+          description: The user dasdasdasjdhjashjkdajkshdknaskdjaksdhjasjkasdasdasdasdasdasdafasdfsgsdfgsfgsdgsgsddgs
           content:
             application/json:
               example:
