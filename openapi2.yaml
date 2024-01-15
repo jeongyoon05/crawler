@@ -15,7 +15,7 @@ paths:
               example:
                 - id: 1
                   username: john_doe
-                  email: john@example.com
+                  email: john@example.cosdsdsm
                 - id: 2
                   username: jane_smith
                   email: jane@example.com
