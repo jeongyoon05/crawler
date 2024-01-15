@@ -21,9 +21,5 @@ jobs:
 
       - name: Print changed files
         run: |
-          CHANGED_FILES="${{ steps.get-changed-files.outputs.changed_files }}"
-
-          IFS=$'\n' read -r -a CHANGED_FILES_ARRAY <<< "$CHANGED_FILES"
-          for file in "${CHANGED_FILES_ARRAY[@]}"; do
-            echo "Changed file: $file"
-          done
+          CHANGED_FILE="${{ steps.get-changed-files.outputs.changed_files }}"
+          echo "$CHANGED_FILE"
