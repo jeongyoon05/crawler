@@ -27,11 +27,13 @@ jobs:
         run: |
           CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
           echo "changed_files=$CHANGED_FILES" >> $GITHUB_ENV
+          echo "changed_files_list=($CHANGED_FILES)" >> $GITHUB_ENV
 
       - name: Print changed files
         run: |
           CHANGED_FILES="${{ steps.get-changed-files.outputs.changed_files }}"
-          echo "$CHANGED_FILES" | while IFS= read -r file; do
+          IFS=$'\n' read -r -a CHANGED_FILES_ARRAY <<< "$CHANGED_FILES"
+          for file in "${CHANGED_FILES_ARRAY[@]}"; do
             echo "Validating file: $file"
             if [[ $file == *.yaml ]]; then
               echo "Running validation..."
