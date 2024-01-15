@@ -19,20 +19,26 @@ jobs:
       - name: Get changed files
         id: get-changed-files
         run: |
-          BASE_COMMIT=$(jq -r '.before' $GITHUB_EVENT_PATH)
-          HEAD_COMMIT=$(jq -r '.after' $GITHUB_EVENT_PATH)
-          CHANGED_FILES=$(git diff --name-only $BASE_COMMIT $HEAD_COMMIT)
+          # Get the list of changed files
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
           echo "::set-output name=changed_files::$CHANGED_FILES"
 
-      - name: Validate OpenAPI definitions
+      - name: Print changed files
         run: |
           CHANGED_FILES="${{ steps.get-changed-files.outputs.changed_files }}"
           
           # Process each changed file
           IFS=$'\n' read -r -a CHANGED_FILES_ARRAY <<< "$CHANGED_FILES"
           for file in "${CHANGED_FILES_ARRAY[@]}"; do
-            if [[ $file == *".yaml" ]]; then
-              echo "Validating $file"
-              docker run -v $PWD:/app -w /app char0n/swagger-editor-validate:v1 --swagger-editor-url http://localhost/ --definition-file $file
-            fi
+            echo "Changed file: $file"
+          done
+
+      - name: Print changed files
+        run: |
+          CHANGED_FILES="${{ steps.get-changed-files.outputs.changed_files }}"
+
+          # Process each changed file
+          IFS=$'\n' read -r -a CHANGED_FILES_ARRAY <<< "$CHANGED_FILES"
+          for file in "${CHANGED_FILES_ARRAY[@]}"; do
+            echo "Changed file: $file"
           done
