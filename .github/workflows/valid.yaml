@@ -1,6 +1,6 @@
 name: Validate OpenAPI Definitions
 
-on: [push]
+on: [ push ]
 
 jobs:
   validate:
@@ -11,6 +11,11 @@ jobs:
           - openapi.yaml
           - openapi2.yaml
           - openapi3.yaml
+    services:
+      swagger-editor:
+        image: swaggerapi/swagger-editor
+        ports:
+          - 80:8080
 
     steps:
       - name: Checkout repository
