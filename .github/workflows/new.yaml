@@ -13,11 +13,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Fetch latest changes
+        run: git fetch --prune --unshallow
+
       - name: Get changed files
         id: get-changed-files
         run: |
           # Get the list of changed files
-          CHANGED_FILES=$(git diff --name-status main ${{ github.sha }})
+          CHANGED_FILES=$(git diff --name-status ${{ github.event.before }} ${{ github.sha }})
           echo "::set-output name=changed_files::$CHANGED_FILES"
 
       - name: Print changed files
