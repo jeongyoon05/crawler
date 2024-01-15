@@ -35,6 +35,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: print
+        run: echo "aaaaa ${{ needs.get-changed-files.outputs.changed_files }}"
+
       - name: Validate OpenAPI definition
         uses: char0n/swagger-editor-validate@v1
         with:
