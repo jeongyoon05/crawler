@@ -45,7 +45,7 @@ paths:
             type: integer
       responses:
         '200':
-          description: The user with the specified ID sdajksdajsdhkaskdhjashjkdajkshdknaskdjaksdhjasjkasdasdasdasdasdasda
+          description: The user with the specified ID sdajksdajsdhkaskdhjashjkdajkshdknaskdjaksdhjasjkasdasdasdasdasdasdafasdfsgsdfgsfgsdgsgsddgs
           content:
             application/json:
               example:
