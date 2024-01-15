@@ -1,0 +1,38 @@
+name: Validate OpenAPI Definitions test
+
+on: [ push ]
+
+jobs:
+  validated:
+    runs-on: ubuntu-latest
+
+    services:
+      swagger-editor:
+        image: swaggerapi/swagger-editor
+        ports:
+          - 80:8080
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Get changed files
+        id: get-changed-files
+        run: |
+          BASE_COMMIT=$(jq -r '.before' $GITHUB_EVENT_PATH)
+          HEAD_COMMIT=$(jq -r '.after' $GITHUB_EVENT_PATH)
+          CHANGED_FILES=$(git diff --name-only $BASE_COMMIT $HEAD_COMMIT)
+          echo "::set-output name=changed_files::$CHANGED_FILES"
+
+      - name: Validate OpenAPI definitions
+        run: |
+          CHANGED_FILES="${{ steps.get-changed-files.outputs.changed_files }}"
+          
+          # Process each changed file
+          IFS=$'\n' read -r -a CHANGED_FILES_ARRAY <<< "$CHANGED_FILES"
+          for file in "${CHANGED_FILES_ARRAY[@]}"; do
+            if [[ $file == *".yaml" ]]; then
+              echo "Validating $file"
+              docker run -v $PWD:/app -w /app char0n/swagger-editor-validate:v1 --swagger-editor-url http://localhost/ --definition-file $file
+            fi
+          done
