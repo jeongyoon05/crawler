@@ -20,14 +20,11 @@ jobs:
         id: get-changed-files
         run: |
           # Get the list of changed files
-          CHANGED_FILES=$(git diff --name-status @{u} ${{ github.sha }})
+          CHANGED_FILES=$(git diff --name-status main ${{ github.sha }})
           echo "::set-output name=changed_files::$CHANGED_FILES"
 
-      - name: Checkout repository
-        uses: actions/checkout@v2
       - name: Validate OpenAPI definition
         uses: char0n/swagger-editor-validate@v1
         with:
           swagger-editor-url: http://localhost/
           definition-file: ${{ steps.get-changed-files.outputs.changed_files }}
-
