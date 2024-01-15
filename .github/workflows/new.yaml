@@ -1,9 +1,6 @@
 name: Get Changed Files on Push
 
-on:
-  push:
-    branches:
-      - main
+on: [ push ]
 
 jobs:
   get-changed-files:
@@ -20,7 +17,7 @@ jobs:
         id: get-changed-files
         run: |
           # Get the list of changed files
-          CHANGED_FILES=$(git diff --name-status ${{ github.event.before }} ${{ github.sha }})
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
           echo "::set-output name=changed_files::$CHANGED_FILES"
 
       - name: Print changed files
