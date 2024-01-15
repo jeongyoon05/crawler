@@ -16,7 +16,6 @@ jobs:
       - name: Get changed files
         id: get-changed-files
         run: |
-          # Get the list of changed files
           CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
           echo "::set-output name=changed_files::$CHANGED_FILES"
 
@@ -24,7 +23,6 @@ jobs:
         run: |
           CHANGED_FILES="${{ steps.get-changed-files.outputs.changed_files }}"
 
-          # Process each changed file
           IFS=$'\n' read -r -a CHANGED_FILES_ARRAY <<< "$CHANGED_FILES"
           for file in "${CHANGED_FILES_ARRAY[@]}"; do
             echo "Changed file: $file"
