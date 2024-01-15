@@ -24,7 +24,7 @@ paths:
       description: Create a new user in the system
       requestBody:
         required: true
-        content:
+        cont
           application/json:
             example:
               username: new_user
