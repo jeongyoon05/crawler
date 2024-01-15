@@ -1,0 +1,42 @@
+name: Get Changed Files on Push Last
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  get-changed-files:
+    runs-on: ubuntu-latest
+
+    services:
+      swagger-editor:
+        image: swaggerapi/swagger-editor
+        ports:
+          - 80:8080
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Fetch latest changes
+        run: git fetch --prune --unshallow
+
+      - name: Get changed files
+        id: get-changed-files
+        run: |
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          echo "changed_files=$CHANGED_FILES" >> $GITHUB_ENV
+
+      - name: Print changed files
+        run: |
+          CHANGED_FILES="${{ steps.get-changed-files.outputs.changed_files }}"
+          echo "$CHANGED_FILES" | while IFS= read -r file; do
+            echo "Validating file: $file"
+            if [[ $file == *.yaml ]]; then
+              echo "Running validation..."
+              char0n/swagger-editor-validate@v1 --swagger-editor-url http://localhost/ --definition-file "$file"
+            else
+              echo "Skipping non-YAML file: $file"
+            fi
+          done
