@@ -1,13 +1,16 @@
 name: Validate OpenAPI Definitions
 
-on:
-  push:
-    branches:
-      - main
+on: [ push ]
 
 jobs:
   validate:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        definition-file:
+          - openapi.yaml
+          - openapi2.yaml
+          - openapi3.yaml
     services:
       swagger-editor:
         image: swaggerapi/swagger-editor
@@ -17,10 +20,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Validate OpenAPI definitions
-        run: |
-          for file in openapi.yaml openapi2.yaml openapi3.yaml; do
-            echo "Validating $file"
-            docker run -v $PWD:/app -w /app char0n/swagger-editor-validate:v1 --swagger-editor-url http://localhost/ --definition-file $file
-          done
+      - name: Validate OpenAPI definition
+        uses: char0n/swagger-editor-validate@v1
+        with:
+          swagger-editor-url: http://localhost/
+          definition-file: ${{ matrix.definition-file }}
