@@ -1,20 +1,23 @@
-on: push
-name: Validate API swagger documentation
-jobs:
-  test_swagger_editor_validator_service:
-    runs-on: ubuntu-latest
-    name: Swagger Editor Validator Service
+name: Validate OpenAPI Definitions
 
-    services:
-      swagger-editor:
-        image: swaggerapi/swagger-editor
-        ports:
-          - 80:8080
+on: [push]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        definition-file:
+          - openapi.yaml
+          - openapi2.yaml
+          - openapi3.yaml
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Validate OpenAPI definition
         uses: char0n/swagger-editor-validate@v1
         with:
           swagger-editor-url: http://localhost/
-          definition-file: openapi.yaml
+          definition-file: ${{ matrix.definition-file }}
