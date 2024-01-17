@@ -8,9 +8,9 @@ jobs:
     strategy:
       matrix:
         definition-file:
-          - path/to/definition1.yaml
-          - path/to/definition2.yaml
-          - path/to/definition3.yaml
+          - openapi.yaml
+          - openapi2.yaml
+          - openapi3.yaml
 
     steps:
       - name: Checkout repository
