@@ -3,26 +3,22 @@ name: Validate OpenAPI Definitions
 on: [ push ]
 
 jobs:
-  validate:
+  validate-definitions:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         definition-file:
-          - openapi.yaml
-          - openapi2.yaml
-          - openapi3.yaml
-    services:
-      swagger-editor:
-        image: swaggerapi/swagger-editor
-        ports:
-          - 80:8080
+          - path/to/definition1.yaml
+          - path/to/definition2.yaml
+          - path/to/definition3.yaml
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
       - name: Validate OpenAPI definition
-        uses: char0n/swagger-editor-validate@v1
-        with:
-          swagger-editor-url: http://localhost/
-          definition-file: ${{ matrix.definition-file }}
+        run: |
+          for file in ${{ matrix.definition-file }}; do
+            echo "Validating $file"
+            char0n/swagger-editor-validate@v1 --swagger-editor-url http://localhost/ --definition-file $file
+          done
