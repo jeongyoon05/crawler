@@ -30,7 +30,7 @@ jobs:
           echo "$CHANGED_FILE"
 
       - name: Validate OpenAPI definition
-        if: ${{ endsWith(needs.get-changed-files.outputs.changed_files, '.yaml') }} #이거 뭔가 이상
+        if: ${{ endsWith(steps.get-changed-files.outputs.changed_files, '.yaml') }} #이거 뭔가 이상
         uses: char0n/swagger-editor-validate@v1
         with:
           swagger-editor-url: http://localhost/
