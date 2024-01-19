@@ -28,7 +28,7 @@ paths:
           application/json:
             example:
               username: new_user
-              email: new_usdasdsdadasdasdasddasdasdasdasdasdas.com
+              email: new_usdasdsdadasdㅁㄹㅇㄴㄹㅁasdasddasdasdasdasdasdas.com
       responses:
         '201':
           description: User created successfully
