@@ -1,0 +1,28 @@
+name: Read First Changed File Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  read-file:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Read first changed file
+        run: |
+          # 첫 번째 변경된 파일 가져오기
+          first_file=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | head -n 1)
+          
+          # 파일 내용 읽어오기
+          file_content=$(cat "$first_file")
+          
+          # 파일 내용 출력 또는 다른 작업 수행 (이 부분은 필요에 따라 수정 가능)
+          echo "Content of the first changed file:"
+          echo "$file_content"
+
+        working-directory: ${{ github.workspace }}
