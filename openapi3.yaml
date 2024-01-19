@@ -21,7 +21,7 @@ paths:
                   email: jane@example.com
     post:
       summary: Create a new user
-      description: Create a new user adsdasdasdin the system
+      description: Create a new user adsdassadsdasdasdasdasdin the system
       requestBody:
         required: true
         content:
