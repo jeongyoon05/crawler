@@ -22,4 +22,9 @@ jobs:
         run: npm install -g swagger-cli@2.2.1
 
       - name: Validate Swagger
-        run: swagger-cli validate openapi2.yaml
+        run: |
+          files=("openapi.yaml" "openapi2.yaml" "openapi3.yaml")
+
+          for file in "${files[@]}"; do
+          swagger-cli validate "$file"
+          done
