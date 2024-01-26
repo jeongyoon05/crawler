@@ -22,7 +22,7 @@ paths:
     post:
       summary: Create a new user
       description: Create a new user adsdasdasdin the system
-      requestBody:
+      requessstBody:
         required: true
         content:
           application/json:
